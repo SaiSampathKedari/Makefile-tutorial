@@ -1,6 +1,7 @@
 ---
 layout: default
 title: Compiler & Linker Flags
+description: Learn how to manually compile and link C++ projects before writing Makefiles.
 nav_order: 2
 ---
 
