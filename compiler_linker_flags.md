@@ -6,28 +6,28 @@
 Expands `#include`, `#define`, and macros; removes comments; produces an intermediate `.i` file.
 
 ```bash
-g++ -E source.cpp -o source.i
+>> g++ -E source.cpp -o source.i
 ```
 
 ### 2. **Compilation**
 Converts preprocessed code into assembly (`.s` file).
 
 ```bash
-g++ -S source.i -o source.s
+>> g++ -S source.i -o source.s
 ```
 
 ### 3. **Assembly**
 Converts assembly into machine code (`.o` object file).
 
 ```bash
-g++ -c source.s -o source.o
+>> g++ -c source.s -o source.o
 ```
 
 ### 4. **Linking**
 Combines object files and libraries into a final executable.
 
 ```bash
-g++ source1.o source2.o -o output
+>> g++ source1.o source2.o -o output
 ```
 
 ### 📋 Summary Table
@@ -52,7 +52,7 @@ g++ source1.o source2.o -o output
 - This naming convention is automatically understood by g++ when linking libraries using the `-l` flag.
   - You can just use `-lutilities`, and `g++` will search for `libutilities.so` or `libutilities.a` behind the scenes.
   - ```
-    g++ main.o -lutilities -o output
+    >> g++ main.o -lutilities -o output
     ```
   - This works because `g++` adds the `lib` prefix and `.so/.a` suffix automatically.
 - But when you're creating the library yourself, you must use the full name like:
@@ -67,18 +67,18 @@ g++ source1.o source2.o -o output
   - Sometimes your project uses custom headers that are not in the default system folders like `/usr/include/`. You use `-I` to tell the compiler where to find them.
   - How to use it:
     - ```bash
-      g++ -I/path/to/headers main.cpp -o output
+      >> g++ -I/path/to/headers main.cpp -o output
       ```
     - No space between `-I` and the path
     - You can use multiple `-I` options if you have headers in different folders
     - Example
     - ```bash
-      g++ -I./include -I../shared_headers main.cpp -o app
+      >> g++ -I./include -I../shared_headers main.cpp -o app
       ```
     - This tell the compiler to look in:
       - `./include`
       - `../shared_headers` ... in addition to the system's default include path.
-- **Important Notes:**
+- 📌 **Important Notes:**
   - `-I` only affect the compilation stage ( when `.cpp` files are being compiled.
   - System default include paths (like `/usr/include`) are alwasy checked automatically.
   - Use `-I` to add your project-specific or third-party header locations.
@@ -91,16 +91,16 @@ g++ source1.o source2.o -o output
   - Libraries contain code that has already been compiled (like math functions, robot control libraries, etc.). Instead of rewriting everything, you can just link these libraries into your program.
   - How to use it:
   - ```bash
-    g++ main.o -lutilities -o app
+    >> g++ main.o -lutilities -o app
     ```
   - `-lutilities` means link with `libutilities.so` or `libutilities.a`.
   - You don't write `lib` or `.so/.a` — just the short name after `-l`, the linker will automatically search for the correct file.
-- **Important Notes:**
+- 📌 **Important Notes:**
   - Linking happens during the final linking stage — after compiling `.cpp` files into `.o` files.
   - This option usually comes at the end of the `g++` command.
   - If you want to link multiple libraries, just use multiple `-l` options:
   - ```bash
-    g++ main.o -lmath_utils -ltrajectory -lutilities -o app
+    >> g++ main.o -lmath_utils -ltrajectory -lutilities -o app
     ```
   - Where are libraries located?
     - `/lib`
@@ -117,23 +117,23 @@ g++ source1.o source2.o -o output
   - By default, `g++` looks for libraries only in standard system directories like `/usr/lib` or `/lib`.
   - If your library is in a **custom folder**, you need to tell the linker where to find it using `-L`.
   - ```bash
-    g++ main.o -L./libs -lutilities -o output
+    >> g++ main.o -L./libs -lutilities -o output
     ```
   - `L./libs` add the `./libs` folder to the library search path
   - Combined with `-lutilities`, the linker will try to find:
       - `libutilities.so` (for dynamics linking)
       - `libutilities.a` (for static linking)
   - If both exists, `g++` will prefer the shared (`.so`) version by default
-- **Important Notes:**
+- 📌 **Important Notes:**
   - There is no space between `-L` and the path.
   - You can specify multiple paths using multiple `-L` flags:
     - ```bash
-      g++ -L./libs -L../external_libs -lutilities -o app
+      >> g++ -L./libs -L../external_libs -lutilities -o app
       ```
   - This is used only during the linking stage.
   - If you want to force static linking, use:
     - ``` bash
-      g++ main.o -L./libs -Wl,-Bstatic -lutilities -Wl,-Bdynamic -o output
+      >> g++ main.o -L./libs -Wl,-Bstatic -lutilities -Wl,-Bdynamic -o output
       ```
   -  :warning: `-L` only affects link-time lookup, not runtime.
 
@@ -153,7 +153,7 @@ There are two main options to solve this:
 
 This environment variable tells the dynamic linker where to search for shared libraries at runtime.
 ```bash
-export LD_LIBRARY_PATH=./libs:$LD_LIBRARY_PATH
+>> export LD_LIBRARY_PATH=./libs:$LD_LIBRARY_PATH
 ```
 ⚠️ LD_LIBRARY_PATH is great for development and testing, but can interfere with other programs if not unset or reset properly.
 
@@ -161,10 +161,61 @@ export LD_LIBRARY_PATH=./libs:$LD_LIBRARY_PATH
 #### 2. `rpath` — Embed Library Path at Link Time
 
 You can embed the path to the shared library **into the executable itself** using the `-Wl,-rpath` option during linking:
-  ```
-  bash g++ main.o -L./libs -lutilities -Wl,-rpath=./libs -o output 
+  ```bash
+  >> g++ main.o -L./libs -lutilities -Wl,-rpath=./libs -o output 
   ```
 This method is more stable and program-specific — no need to set environment variables.
+
+---
+
+### 6. `-D` — Define Preprocessor Macros (Compiler Flags)
+
+The `-D` flag is used to define **preprocessor macros** at compile time, without modifying the source code.
+
+This is equivalent to writing `#define` statements directly in your code. It's commonly used for:
+
+- Enabling or disabling features
+- Toggling debug mode
+- Setting configuration values
+- Conditional compilation
+
+#### ✅ Example Usages
+
+main.cpp
+```C++
+#include <iostream>
+
+int main()
+{
+  #ifdef DEBUG
+  std::cout << ""Debug mode enabled\n";
+  #endif
+
+  #if LOG_LEVEL=2
+  std::cout << "Verbose logging\n";
+  #endif
+
+  return 0;
+}
+```
+
+```bash
+>> g++ -DDEBUG -DLOG_LEVEL=1 main.cpp -o output     # same as #define DEBUG and #define LOG_LEVEL 1
+>> ./output
+>> Debug mode enabled
+```
+
+📌 Important Notes
+- There should be no space between -D and the macro name.
+- You can define macros with or without values.
+- These flags are applied during the preprocessing stage, before compilation.
+
+
+| Flag                      | Result in Code                  |
+|---------------------------|----------------------------------|
+| `-DDEBUG`                 | `#define DEBUG`                  |
+| `-DMODE=1`                | `#define MODE 1`                 |
+| `-DVERSION="1.0"`         | `#define VERSION "1.0"`          |
 
 ---
 
@@ -173,6 +224,7 @@ This method is more stable and program-specific — no need to set environment v
 | Flag               | Purpose                                        | When Used     |
 |--------------------|------------------------------------------------|---------------|
 | `-I<dir>`          | Add header file search path                    | Compilation   |
+| `-D<name>[=value]` | Define preprocessor macro                      | Compilation   |
 | `-L<dir>`          | Add library search path                        | Linking       |
 | `-l<name>`         | Link with `lib<name>.so` or `lib<name>.a`      | Linking       |
 | `-Wl,-rpath=<dir>` | Embed runtime path for shared libraries        | Linking       |
