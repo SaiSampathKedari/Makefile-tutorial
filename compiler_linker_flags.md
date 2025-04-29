@@ -130,3 +130,27 @@ g++ source1.o source2.o -o output
       g++ main.o -L./libs -Wl,-Bstatic -lutilities -Wl,-Bdynamic -o output
       ```
   -  :warning: `-L` only affects link-time lookup, not runtime.
+
+### 5. Locating Shared Libraries at Runtime
+- When your program is linked against a **shared library** (like `libutilities.so`), the library must be **found and loaded again at runtime** — not just during compilation.
+- If the shared library is not in a **standard system directory** (like `/lib` or `/usr/lib`), you need to tell the program **where to find it**.
+
+There are two main options:
+
+#### ✅ 1. `rpath` — Embed Library Path at Link Time
+
+You can embed the path to the shared library **into the executable itself** using the `-Wl,-rpath` option during linking:
+  ```
+  bash g++ main.o -L./libs -lutilities -Wl,-rpath=./libs -o output 
+  ```
+
+## 📋 Summary of Key Linking & Library Flags
+
+| Flag               | Purpose                                        | When Used     |
+|--------------------|------------------------------------------------|---------------|
+| `-I<dir>`          | Add header file search path                    | Compilation   |
+| `-L<dir>`          | Add library search path                        | Linking       |
+| `-l<name>`         | Link with `lib<name>.so` or `lib<name>.a`      | Linking       |
+| `-Wl,-rpath=<dir>` | Embed runtime path for shared libraries        | Linking       |
+| `LD_LIBRARY_PATH`  | Set runtime shared library path (env variable) | Runtime       |
+
