@@ -59,6 +59,8 @@ g++ source1.o source2.o -o output
   - `libutilities.so` (for shared libraries)
   - `libutilities.a` (for static libraries)
 
+---
+
 ### **2. `-I` -- Add Header File Search Path**
 - The `-I` option tell the compiler where to look for header files (`.h` or `.hpp`) during compilation.
 - Why use `-I`?
@@ -80,6 +82,8 @@ g++ source1.o source2.o -o output
   - `-I` only affect the compilation stage ( when `.cpp` files are being compiled.
   - System default include paths (like `/usr/include`) are alwasy checked automatically.
   - Use `-I` to add your project-specific or third-party header locations.
+
+---
  
 ### 3. `-l` -- Link with a library
 - The `-l` option tells the linker to link your executable with a precompiled library (either a static `.a` or a shared `.so` file).
@@ -104,6 +108,8 @@ g++ source1.o source2.o -o output
   - Their files are named like:
     - `libmath_utils.so`, `libmath_utils.a` (for the math_utils library)
   - When you write `-lmath_utils`, the linker understands it should find `libmath_utils.so` or `libmath_utils.a`.
+
+---
 
 ### 4. `-L` — Add Library Search Path
 - The `-L` option tells the linker where to **look for libraries** (e.g., `libutilities.a` for static, `libutilities.so` for shared ) **during linking**.
@@ -131,6 +137,8 @@ g++ source1.o source2.o -o output
       ```
   -  :warning: `-L` only affects link-time lookup, not runtime.
 
+---
+
 ### 5. Locating Shared Libraries at Runtime
 - When your program is linked against a **shared library** (like `libutilities.so`), the library must be **found and loaded again at runtime** — not just during compilation.
 - If the shared library is not in a **standard system directory** (like `/lib` or `/usr/lib`), you need to tell the program **where to find it**.
@@ -143,6 +151,8 @@ You can embed the path to the shared library **into the executable itself** usin
   ```
   bash g++ main.o -L./libs -lutilities -Wl,-rpath=./libs -o output 
   ```
+
+---
 
 ## 📋 Summary of Key Linking & Library Flags
 
