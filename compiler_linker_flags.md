@@ -80,3 +80,27 @@ g++ source1.o source2.o -o output
   - `-I` only affect the compilation stage ( when `.cpp` files are being compiled.
   - System default include paths (like `/usr/include`) are alwasy checked automatically.
   - Use `-I` to add your project-specific or third-party header locations.
+ 
+### 3. `-l` -- Link with a library
+- The `-l` option tells the linker to link your executable with a precompiled library (either a static `.a` or a shared `.so` file).
+- Why use `-l`?
+  - Libraries contain code that has already been compiled (like math functions, robot control libraries, etc.). Instead of rewriting everything, you can just link these libraries into your program.
+  - How to use it:
+  - ```bash
+    g++ main.o -lutilities -o app
+    ```
+  - `-lutilities` means link with `libutilities.so` or `libutilities.a`.
+  - You don't write `lib` or `.so/.a` — just the short name after `-l`, the linker will automatically search for the correct file.
+- **Important Nodes:**
+  - Linking happens during the final linking stage — after compiling `.cpp` files into `.o` files.
+  - This option usually comes at the end of the `g++` command.
+  - If you want to link multiple libraries, just use multiple `-l` options:
+  - ```bash
+    g++ main.o -lmath_utils -ltrajectory -lutilities -o app
+    ```
+  - Where are libraries located?
+    - `/lib`
+    - `/usr/lib`
+  - Their files are named like:
+    - `libmath_utils.so`, `libmath_utils.a` (for the math_utils library)
+  - When you write `-lmath_utils`, the linker understands it should find `libmath_utils.so` or `libmath_utils.a`.
