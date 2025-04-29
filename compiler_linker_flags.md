@@ -58,3 +58,25 @@ g++ source1.o source2.o -o output
 - But when you're creating the library yourself, you must use the full name like:
   - `libutilities.so` (for shared libraries)
   - `libutilities.a` (for static libraries)
+
+### **2. `-I` -- Add Header File Search Path**
+- The `-I` option tell the compiler where to look for header files (`.h` or `.hpp`) during compilation.
+- Why use `-I`?
+  - Sometimes your project uses custom headers that are not in the default system folders like `/usr/include/`. You use `-I` to tell the compiler where to find them.
+  - How to use it:
+    - ```bash
+      g++ -I/path/to/headers main.cpp -o output
+      ```
+    - No space between `-I` and the path
+    - You can use multiple `-I` options if you have headers in different folders
+    - Example
+    - ```bash
+      g++ -I./include -I../shared_headers main.cpp -o app
+      ```
+    - This tell the compiler to look in:
+      - `./include`
+      - `../shared_headers` ... in addition to the system's default include path.
+- **Important Nodes:**
+  - `-I` only affect the compilation stage ( when `.cpp` files are being compiled.
+  - System default include paths (like `/usr/include`) are alwasy checked automatically.
+  - Use `-I` to add your project-specific or third-party header locations.
