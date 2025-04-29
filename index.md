@@ -1,8 +1,12 @@
-# Makefile-Tutorial
+---
+layout: default
+title: Home
+nav_order: 1
+---
 
-## 📘 About This Tutorial
+# 📘 Makefile Tutorial
 
-This repository is a hands-on tutorial on how to write Makefiles from scratch — the way they are structured and used in real-world C++ and C projects.
+This is a hands-on tutorial on how to write Makefiles from scratch — the way they are structured and used in real-world C++ and C projects.
 
 Before diving into Makefiles, it's essential to understand **how to manually compile and link** your code using the `g++` (or `gcc`) compiler.
 
