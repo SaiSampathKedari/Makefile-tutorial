@@ -76,7 +76,7 @@ g++ source1.o source2.o -o output
     - This tell the compiler to look in:
       - `./include`
       - `../shared_headers` ... in addition to the system's default include path.
-- **Important Nodes:**
+- **Important Notes:**
   - `-I` only affect the compilation stage ( when `.cpp` files are being compiled.
   - System default include paths (like `/usr/include`) are alwasy checked automatically.
   - Use `-I` to add your project-specific or third-party header locations.
@@ -91,7 +91,7 @@ g++ source1.o source2.o -o output
     ```
   - `-lutilities` means link with `libutilities.so` or `libutilities.a`.
   - You don't write `lib` or `.so/.a` — just the short name after `-l`, the linker will automatically search for the correct file.
-- **Important Nodes:**
+- **Important Notes:**
   - Linking happens during the final linking stage — after compiling `.cpp` files into `.o` files.
   - This option usually comes at the end of the `g++` command.
   - If you want to link multiple libraries, just use multiple `-l` options:
@@ -104,3 +104,29 @@ g++ source1.o source2.o -o output
   - Their files are named like:
     - `libmath_utils.so`, `libmath_utils.a` (for the math_utils library)
   - When you write `-lmath_utils`, the linker understands it should find `libmath_utils.so` or `libmath_utils.a`.
+
+### 4. `-L` — Add Library Search Path
+- The `-L` option tells the linker where to **look for libraries** (e.g., `libutilities.a` for static, `libutilities.so` for shared ) **during linking**.
+- Why use `-L`?
+  - By default, `g++` looks for libraries only in standard system directories like `/usr/lib` or `/lib`.
+  - If your library is in a **custom folder**, you need to tell the linker where to find it using `-L`.
+  - ```bash
+    g++ main.o -L./libs -lutilities -o output
+    ```
+  - `L./libs` add the `./libs` folder to the library search path
+  - Combined with `-lutilities`, the linker will try to find:
+      - `libutilities.so` (for dynamics linking)
+      - `libutilities.a` (for static linking)
+  - If both exists, `g++` will prefer the shared (`.so`) version by default
+- **Important Notes:**
+  - There is no space between `-L` and the path.
+  - You can specify multiple paths using multiple `-L` flags:
+    - ```bash
+      g++ -L./libs -L../external_libs -lutilities -o app
+      ```
+  - This is used only during the linking stage.
+  - If you want to force static linking, use:
+    - ``` bash
+      g++ main.o -L./libs -Wl,-Bstatic -lutilities -Wl,-Bdynamic -o output
+      ```
+  -  :warning: `-L` only affects link-time lookup, not runtime.
