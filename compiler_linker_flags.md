@@ -142,15 +142,29 @@ g++ source1.o source2.o -o output
 ### 5. Locating Shared Libraries at Runtime
 - When your program is linked against a **shared library** (like `libutilities.so`), the library must be **found and loaded again at runtime** — not just during compilation.
 - If the shared library is not in a **standard system directory** (like `/lib` or `/usr/lib`), you need to tell the program **where to find it**.
+- If the library isn't in a standard location like `/lib` or `/usr/lib`, the program will fail with:
+  - ```bash
+    ./output: error while loading shared libraries: libutilities.so: cannot open shared object file: No such file or directory
+    ```
 
-There are two main options:
+There are two main options to solve this:
 
-#### ✅ 1. `rpath` — Embed Library Path at Link Time
+#### 1. Using LD_LIBRARY_PATH (Temporary, Environment-Based)
+
+This environment variable tells the dynamic linker where to search for shared libraries at runtime.
+```bash
+export LD_LIBRARY_PATH=./libs:$LD_LIBRARY_PATH
+```
+⚠️ LD_LIBRARY_PATH is great for development and testing, but can interfere with other programs if not unset or reset properly.
+
+
+#### 2. `rpath` — Embed Library Path at Link Time
 
 You can embed the path to the shared library **into the executable itself** using the `-Wl,-rpath` option during linking:
   ```
   bash g++ main.o -L./libs -lutilities -Wl,-rpath=./libs -o output 
   ```
+This method is more stable and program-specific — no need to set environment variables.
 
 ---
 
