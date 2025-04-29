@@ -1,3 +1,9 @@
+---
+layout: default
+title: Compiler & Linker Flags
+nav_order: 2
+---
+
 # C++ Compilation and Linking: Flags, Targets, and Fundamentals for Writing Makefiles
 
 ## These are the 4 essential stages that convert C++ source code into an executable.
