@@ -1,8 +1,11 @@
 ---
 layout: default
-title: Home
+title: Makefile Tutorial
 nav_order: 1
+description: Learn how to write professional Makefiles by first understanding C++ compilation, linking, and the build process. Ideal for beginners and robotics engineers working with real-world C++ projects.
+keywords: Makefile tutorial, how to write a Makefile, C++ Makefile guide, compiling and linking C++, static libraries, shared libraries, build systems, robotics, C++ projects
 ---
+
 
 # 📘 Makefile Tutorial
 
