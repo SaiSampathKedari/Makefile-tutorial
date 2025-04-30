@@ -1,8 +1,9 @@
 ---
 layout: default
 title: Compiler & Linker Flags
-description: Learn how to manually compile and link C++ projects before writing Makefiles.
 nav_order: 2
+description: A practical guide to understanding the C++ build process—learn how to compile, assemble, link, and use flags like -I, -L, -l, -rpath, and LD_LIBRARY_PATH before writing Makefiles.
+keywords: C++ compiler flags, linker flags, g++ options, static linking, dynamic linking, C++ build process, -I, -L, -l, -rpath, LD_LIBRARY_PATH, makefile preparation, compiling C++
 ---
 
 # C++ Compilation and Linking: Flags, Targets, and Fundamentals for Writing Makefiles
