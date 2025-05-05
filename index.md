@@ -39,8 +39,9 @@ target: prerequisites/dependencies
 ### Basic Stucture of a Makefile
 
 ```make
-Variable1
-Variable2
+CC = gcc # Defining a Variable in a Makefile
+CXX = g++ # Use $(CXX) to access the value of the CXX variable in your Makefile.
+
 
 target1: dependencies
 	command
