@@ -79,12 +79,16 @@ target3: dependencies
   - It can be any valid shell command: `g++`, `cp`, `rm`, `echo` etc.
   - If there are multiple lines, they are run one by one.
 
-### Example
+### Example1: No Dependencies 
 Makefile
 ```makefile
 greet:
 	echo "Welcome to Makefile tutorials!"
 ```
+* `target`: greet
+* `Dependencies`: none
+* `command`: print a messsage
+
 output:
 ```bash
 $ make
@@ -92,3 +96,28 @@ echo "Welcome to Makefile tutorials!"
 Welcome to Makefile tutorials!
 ```
 
+### Example2: Single Dependencies
+main.cpp
+```C++
+#include <iostream>
+int main()
+{
+    std::cout << "Hello World!\n" ;
+    return 0;
+}
+```
+Makefile
+```makefile
+output: main.cpp
+	g++ main.cpp -o output
+```
+* `target`: output
+* `Dependencies`: main.cpp
+* `command`: generate executable
+output:
+```bash
+$ make
+g++ main.cpp -o output
+$ ./output
+Hello World!
+```
