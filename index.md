@@ -43,14 +43,14 @@ Variable1
 Variable2
 
 target1: dependencies
-<tab>command
+	command
 
 target2: dependencies
-<tab>command
+	command
 
 target3: dependencies
-<tab>command1
-<tab>command2
+	command1
+	command2
 
 .
 .
