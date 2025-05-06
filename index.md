@@ -223,10 +223,57 @@ Each rule in Makefile has:
 * A list of dependencies (other files or targets it relies on)
 * A recipe (the command to build it)
 
-When make sees a target, it:
-1. Checks if the target file exists.
-2. If it does exist, it compares its timestamp to each dependency.
-3. If any dependency is newer, or the target doesn't exist, it:
-   - Looks for a rule to build that dependency
-   - Recursively runs that rule
-4. Once all dependencies are up to date, it runs the recipe for the target. 
+When you run `make`, it doesn't blindly execute every rule.
+instead, `make`:
+1. Starts with the requested target (or the first rule if none specified)
+2. Recursively checks whether each dependency (prerequisite) is:
+   - Present
+   - Up to date
+3. If not, it finds a rule to build it and runs that first
+4. This process continues until all dependencies are resolved
+
+Example Makefile:
+```makefile
+output: main.o math.o
+	g++ main.o math.o -o app
+
+main.o: main.cpp
+	g++ -c main.cpp -o main.o
+
+math.o: math.cpp
+	g++ -c math.cpp -o math.o
+```
+
+🛠️ Scenario
+Let's assume this file setup:
+* `main.cpp` and `math.cpp` exits
+* `main.o`, `math.o`, and `output` do not exist yet
+
+⏯️ Now run:
+```bash
+make
+```
+
+#### 🧠 What happens?
+1. make see `output` is the target, but it needs `main.o` and `math.o`
+2. It checks: Does `main.o` exist?
+   - ❌ NO => it finds a rule to build `main.o` using `main.cpp`
+   - ✔️ it runs: `g++ -c main.cpp -o main.o`
+3. Same for `math.o`
+   - ❌ Not present => rule found => builds it with: `g++ -c math.cpp -o math.o`
+4. Now both `.o` files are up to date => `output` can be built
+   - ✔️ it runs: `g++ main.o math.o -o app`
+  
+Second Build (Run `make` again)
+```bash
+make
+```
+
+This time:
+1. `main.o`, `math.o`, and `output` already exist.
+2. `make` check timestamps:
+   - Are `main.o` and `math.o` newer than `main.cpp`, `math.cpp`?
+     - ✔️ Yes => no need to build.
+   - Is output newer than both `.o` files?
+     - ✔️ Yes => everything is up to date
+Result: make prints `make: 'output' is up to date`, nothing is rebild
