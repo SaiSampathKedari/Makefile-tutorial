@@ -164,5 +164,69 @@ Hello World!
 Message from utils.cpp
 ```
 
-## ⚙️ How `make` Works: Rule Selection and Execution Flow
+## 1. ⚙️ How `make` Works: Rule Selection and Execution Flow
 
+When you run the `make` command, it reads the **Makefile** and follows a very predictable, logical process to decide **what to build**, **when to build it**, and **in what order**. Here's how it works:
+
+### 1. Make Always Starts with the First Target
+- make always beigns with the first rule it finds in the Makefile
+- That rule becomes the default target(also called the entry point).
+- Any other rules are ignored unless they are explicitly:
+  - Specified as dependencies of the first target, or
+  - Called manually (e.g., `make clean`)
+
+#### Example01: Make always starts with the First Target
+```makefile
+first:
+	echo "This is the first (default) target"
+
+second:
+	echo "This is the second target"
+
+third:
+	echo "This is the third target"
+```
+
+🔧 Run:
+```bash
+make
+```
+🖨️ Output:
+```bash
+echo "This is the first (default) target"
+This is the first (default) target
+```
+
+#### 🧠 What happened?
+* you ran `make` with no arguments
+* So it looked for the first rule, which is `first`
+* it ran only the `first` target
+* it did not touch `second` and `third`
+
+#### What if you wnat to run `second` ?
+you must **expilicilty** tell `make`:
+🔧 Run:
+```bash
+make second
+```
+Output:
+```bash
+echo "This is the second target"
+This is the second target
+```
+
+✅ **Rule 1 takeaway:** Unless you override it, only the first target runs when you type `make`.
+
+## 2. 🔄 How Make Follows Dependencies (Recursively)
+Each rule in Makefile has:
+* A target (the thing to build)
+* A list of dependencies (other files or targets it relies on)
+* A recipe (the command to build it)
+
+When make sees a target, it:
+1. Checks if the target file exists.
+2. If it does exist, it compares its timestamp to each dependency.
+3. If any dependency is newer, or the target doesn't exist, it:
+   - Looks for a rule to build that dependency
+   - Recursively runs that rule
+4. Once all dependencies are up to date, it runs the recipe for the target. 
