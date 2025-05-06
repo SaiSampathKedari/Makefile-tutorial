@@ -190,7 +190,7 @@ This is equivalent to writing `#define` statements directly in your code. It's c
 #### ✅ Example Usages
 
 main.cpp
-```C++
+```cpp
 #include <iostream>
 
 int main()
