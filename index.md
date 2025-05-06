@@ -99,7 +99,7 @@ Welcome to Makefile tutorials!
 
 ### Example2: Single Dependency
 main.cpp
-```C++
+```cpp
 #include <iostream>
 int main()
 {
@@ -126,7 +126,7 @@ Hello World!
 
 ### Example2: Multiple Dependencies
 main.cpp
-```C++
+```cpp
 #include <iostream>
 int main()
 {
@@ -136,7 +136,7 @@ int main()
 ```
 
 utils.cpp
-```C++
+```cpp
 #include <iostream>
 
 // Function to print a message from the utils module
@@ -163,3 +163,6 @@ $ ./output
 Hello World!
 Message from utils.cpp
 ```
+
+## ⚙️ How `make` Works: Rule Selection and Execution Flow
+
