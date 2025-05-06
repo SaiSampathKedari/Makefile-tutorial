@@ -97,7 +97,7 @@ echo "Welcome to Makefile tutorials!"
 Welcome to Makefile tutorials!
 ```
 
-### Example2: Single Dependencies
+### Example2: Single Dependency
 main.cpp
 ```C++
 #include <iostream>
@@ -115,10 +115,51 @@ output: main.cpp
 * `target`: output
 * `Dependencies`: main.cpp
 * `command`: generate executable
+
 output:
 ```bash
 $ make
 g++ main.cpp -o output
 $ ./output
 Hello World!
+```
+
+### Example2: Multiple Dependencies
+main.cpp
+```C++
+#include <iostream>
+int main()
+{
+    std::cout << "Hello World!\n" ;
+    return 0;
+}
+```
+
+utils.cpp
+```C++
+#include <iostream>
+
+// Function to print a message from the utils module
+void printmessage()
+{
+    std::cout << "Message from utils.cpp\n";
+}
+```
+
+Makefile
+```Makefile
+output: main.cpp utils.cpp
+	g++ main.cpp utils.cpp -o output
+```
+* `target`: output
+* `Dependencies`: main.cpp utils.cpp
+* `command`: generate executable
+
+output:
+```bash
+$ make
+g++ main.cpp utils.cpp -o output
+$ ./output
+Hello World!
+Message from utils.cpp
 ```
